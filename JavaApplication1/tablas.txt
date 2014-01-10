@@ -1,0 +1,33 @@
+create or replace type cluster_type as object(
+conjunto ref(conjuntopuntos),
+centroide punto_tip,
+puntos nest_puntos,
+radio integer,
+diametro integer
+);
+/
+create table Cluster of cluster_type
+(centroide PRIMARY KEY)
+NESTED TABLE puntos STORE AS puntos_c;
+/
+
+CREATE OR REPLACE TYPE punto_tip AS OBJECT(
+ x NUMBER(3),
+ y NUMBER(3)
+);
+/
+
+CREATE OR REPLACE TYPE
+nest_puntos AS TABLE OF punto_tip;
+/
+
+CREATE TYPE conjuntopuntos_type AS OBJECT(
+id_conj NUMBER(8), 
+mis_puntos nest_puntos);
+/
+
+CREATE TABLE conjuntopuntos OF conjuntopuntos_type
+(id_conj PRIMARY KEY)
+NESTED TABLE mis_puntos STORE AS store_puntos;
+/
+
